@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Toyota GR Supra — Engineered to Move You</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;500;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>tailwind.config={theme:{extend:{colors:{tred:'#EB0A1E'},fontFamily:{d:['Archivo','Arial Narrow','sans-serif'],m:['JetBrains Mono','monospace']}}}}</script>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:#050506;color:#fff;font-family:Archivo,'Arial Narrow',sans-serif;overflow-x:hidden}
+.glass{background:rgba(255,255,255,.04);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.1)}
+.mono{font-family:'JetBrains Mono',monospace;letter-spacing:.18em;font-size:10px;text-transform:uppercase;color:#9ca3af}
+.btn{position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s}
+.btn::after{content:"";position:absolute;inset:0;background:#fff;transform:translateY(101%);transition:transform .35s cubic-bezier(.7,0,.2,1);z-index:0}
+.btn:hover::after{transform:none}.btn:hover{transform:translateY(-2px)}
+.btn span{position:relative;z-index:1;transition:color .3s}.btn:hover span{color:#000}
+.hot{position:absolute;width:30px;height:30px;margin:-15px;border-radius:9999px;border:1px solid #EB0A1E;background:rgba(235,10,30,.25)}
+.hot::before{content:"";position:absolute;inset:-1px;border-radius:inherit;border:1px solid #EB0A1E;animation:ping 2s infinite}
+.hot.on{background:#EB0A1E}
+.hot:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.ctl,.pad{transition:stroke .4s,fill .4s}
+#wheel.lit .ctl{stroke:#EB0A1E}#wheel.lit .pad{stroke:#EB0A1E}
+@keyframes ping{to{transform:scale(2.2);opacity:0}}
+@keyframes mq{to{transform:translateX(-50%)}}
+.mq{animation:mq 28s linear infinite}
+@keyframes bob{50%{transform:translateY(8px)}}
+.bob{animation:bob 1.8s ease-in-out infinite}
+.sw{width:26px;height:26px;border-radius:9999px;border:2px solid transparent;outline:1px solid rgba(255,255,255,.25);outline-offset:2px;transition:transform .25s}
+.sw:hover{transform:scale(1.15)}.sw.on{border-color:#050506;outline:2px solid #fff}
+.stick{position:sticky;top:0;height:100vh;height:100svh}
+.lbl{position:absolute;display:flex;align-items:center;gap:.6rem}
+.lbl i{display:block;height:1px;width:64px;background:linear-gradient(90deg,#EB0A1E,transparent)}
+@media(prefers-reduced-motion:reduce){.mq,.bob,.hot::before{animation:none}}
+/* unveiling */
+#reveal{height:100vh;height:100svh}
+.rv-h{font-weight:900;line-height:.86;letter-spacing:-.045em}
+.rv-stage{display:flex;align-items:center;gap:.75rem;opacity:.3;transition:opacity .4s}
+.rv-stage b{display:block;width:12px;height:1px;background:currentColor;transition:width .45s cubic-bezier(.7,0,.2,1),background .45s}
+.rv-stage.done{opacity:.55}.rv-stage.on{opacity:1}.rv-stage.on b{width:34px;background:#EB0A1E}
+#rv-intro .ln{display:block;overflow:hidden}#rv-intro .ln>span{display:inline-block}
+</style>
+</head>
+<body>
+<div id="loader" class="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center gap-4">
+  <div class="mono">Loading experience</div>
+  <div class="w-48 h-px bg-white/15"><div id="lbar" class="h-full bg-tred w-0"></div></div>
+  <div id="lnum" class="font-m text-xs text-white/60">0%</div>
+</div>
+<div id="progress" class="fixed top-0 left-0 right-0 h-[2px] bg-tred origin-left z-[60]" style="transform:scaleX(0)"></div>
+
+<header class="fixed top-0 inset-x-0 z-50" style="padding-top:env(safe-area-inset-top,0px)">
+  <nav class="flex items-center justify-between px-5 md:px-10 py-5" aria-label="Main">
+    <a href="#reveal" data-go class="flex items-center gap-3" aria-label="Toyota home">
+      <svg width="38" height="26" viewBox="0 0 76 52" fill="none" stroke="#EB0A1E" stroke-width="4"><ellipse cx="38" cy="26" rx="35" ry="23"/><ellipse cx="38" cy="26" rx="12" ry="22"/><ellipse cx="38" cy="14" rx="22" ry="8"/></svg>
+      <span class="font-black tracking-[.3em] text-sm">TOYOTA</span>
+    </a>
+    <div class="hidden md:flex gap-9 mono !text-white/70">
+      <a data-go href="#design" class="hover:text-white transition">Design</a>
+      <a data-go href="#performance" class="hover:text-white transition">Performance</a>
+      <a data-go href="#interior" class="hover:text-white transition">Interior</a>
+      <a data-go href="#final" class="hover:text-white transition">Build</a>
+    </div>
+    <button id="burger" class="md:hidden glass w-11 h-11 rounded-full grid place-items-center" aria-label="Open menu" aria-expanded="false">
+      <span class="block w-4 h-px bg-white relative before:content-[''] before:absolute before:w-4 before:h-px before:bg-white before:-top-1.5 after:content-[''] after:absolute after:w-4 after:h-px after:bg-white after:top-1.5"></span>
+    </button>
+  </nav>
+</header>
+<div id="menu" class="fixed inset-0 z-[55] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 text-4xl font-black" style="clip-path:circle(0% at 90% 5%);pointer-events:none">
+  <button id="mclose" class="absolute top-6 right-6 mono !text-white">Close ✕</button>
+  <a data-go href="#design">DESIGN</a><a data-go href="#performance">PERFORMANCE</a><a data-go href="#interior">INTERIOR</a><a data-go href="#final" class="text-tred">BUILD YOURS</a>
+</div>
+
+<!-- fixed stage -->
+<div id="ghost" class="fixed inset-0 z-[1] grid place-items-center pointer-events-none select-none" style="opacity:.07">
+  <span class="font-black leading-none text-[34vw] md:text-[24vw] tracking-tighter">SUPRA</span>
+</div>
+<div id="glow" class="fixed inset-0 z-[2] pointer-events-none" style="background:radial-gradient(ellipse 60% 50% at 50% 55%,rgba(235,10,30,.14),transparent 70%),radial-gradient(ellipse at 50% 120%,rgba(255,255,255,.08),transparent 60%)"></div>
+<canvas id="gl" class="fixed inset-0 w-full h-full z-[5] pointer-events-none"></canvas>
+<div id="fallback" class="hidden fixed inset-0 z-[5] place-items-center pointer-events-none">
+  <svg viewBox="0 0 440 130" class="w-[90vw] max-w-3xl"><path d="M10 95 L14 70 Q40 62 120 58 Q170 20 230 18 Q290 20 330 55 Q400 62 428 80 L430 98 Z" fill="#EB0A1E"/><circle cx="110" cy="98" r="24" fill="#111" stroke="#ccc" stroke-width="5"/><circle cx="335" cy="98" r="24" fill="#111" stroke="#ccc" stroke-width="5"/></svg>
+</div>
+
+<!-- 0 UNVEILING — pinned, scroll-scrubbed cloth reveal -->
+<section id="reveal" class="relative z-10 overflow-hidden" aria-label="The unveiling">
+  <div id="rv-intro" class="absolute inset-x-0 top-0 px-5 md:px-10 pt-28 md:pt-32 text-center pointer-events-none">
+    <p class="mono mb-5"><span class="text-tred">●</span> Toyota Supra A80 / The Unveiling</p>
+    <h2 class="rv-h text-[15vw] md:text-[8.2vw]"><span class="ln"><span>A LEGEND,</span></span><span class="ln"><span class="text-tred">REVEALED.</span></span></h2>
+  </div>
+  <div id="rv-cue" class="absolute left-1/2 -translate-x-1/2 bottom-10 flex flex-col items-center gap-3 pointer-events-none">
+    <span class="mono !text-white/80">Scroll to unveil</span><span class="bob block w-px h-12 bg-gradient-to-b from-tred to-transparent"></span>
+  </div>
+  <div id="rv-track" class="absolute left-5 md:left-10 bottom-24 md:bottom-10 pointer-events-none" style="opacity:0;visibility:hidden">
+    <ol class="mono !text-white flex flex-col gap-2.5">
+      <li class="rv-stage" data-s="0"><b></b>01 · Silhouette</li>
+      <li class="rv-stage" data-s="1"><b></b>02 · Front fascia</li>
+      <li class="rv-stage" data-s="2"><b></b>03 · Glasshouse</li>
+      <li class="rv-stage" data-s="3"><b></b>04 · Profile &amp; tail</li>
+      <li class="rv-stage" data-s="4"><b></b>05 · Revealed</li>
+    </ol>
+  </div>
+  <div id="rv-meter" class="absolute right-5 md:right-10 bottom-24 md:bottom-10 text-right pointer-events-none" style="opacity:0;visibility:hidden">
+    <div class="mono mb-1">Unveiled</div>
+    <div class="font-m text-3xl md:text-5xl font-medium tabular-nums"><span id="rv-pct">000</span><span class="text-tred text-lg md:text-2xl">%</span></div>
+    <div class="mt-3 w-28 md:w-44 h-px bg-white/15 ml-auto"><div id="rv-bar" class="h-full bg-tred origin-left" style="transform:scaleX(0)"></div></div>
+  </div>
+  <div id="rv-final" class="absolute inset-0 px-5 md:px-10 pt-24 pb-8 flex flex-col justify-between pointer-events-none">
+    <div>
+      <p class="rv-f mono mb-4"><span class="text-tred">●</span> Toyota Supra / Mk IV · A80 · 1993</p>
+      <h2 class="rv-f rv-h text-[14vw] md:text-[7.4vw]">THE LEGEND<br><span class="text-tred">LIVES.</span></h2>
+    </div>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 md:max-w-3xl w-full">
+        <div class="rv-f glass rounded-2xl px-4 py-3"><div class="mono">Engine</div><div class="text-sm md:text-lg font-extrabold">2JZ-GTE 3.0L I6</div></div>
+        <div class="rv-f glass rounded-2xl px-4 py-3"><div class="mono">Induction</div><div class="text-sm md:text-lg font-extrabold">Sequential twin-turbo</div></div>
+        <div class="rv-f glass rounded-2xl px-4 py-3"><div class="mono">Output</div><div class="text-sm md:text-lg font-extrabold">320 hp <small class="text-tred font-medium">US Turbo</small></div></div>
+        <div class="rv-f glass rounded-2xl px-4 py-3"><div class="mono">Gearbox</div><div class="text-sm md:text-lg font-extrabold">6-speed Getrag</div></div>
+      </div>
+      <div class="rv-f flex flex-col items-start md:items-end gap-3 shrink-0">
+        <a data-go href="#hero" class="btn bg-tred px-7 py-4 rounded-full text-xs font-extrabold tracking-[.2em] pointer-events-auto shadow-[0_0_50px_rgba(235,10,30,.4)]"><span>EXPLORE THE SUPRA</span></a>
+        <p class="text-[11px] text-white/40 max-w-[17rem] md:text-right">Figures for the US-market 1993–98 Supra Turbo. Japanese-market cars were rated at 280 PS.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main id="story" class="relative z-10">
+<!-- 1 HERO -->
+<section id="hero" class="relative h-[150vh]">
+  <div class="stick px-5 md:px-10 pt-24 pb-8 flex flex-col justify-between">
+    <div>
+      <p data-r class="mono mb-4"><span class="text-tred">●</span> Toyota GR Supra / Chapter 01</p>
+      <h1 data-r class="font-black leading-[.88] tracking-tighter text-[13vw] md:text-[7.2vw] max-w-4xl">ENGINEERED<br>TO <span class="text-tred">MOVE YOU.</span></h1>
+    </div>
+    <div class="hidden md:flex flex-col gap-4 absolute right-10 top-1/2 -translate-y-1/2 text-right">
+      <div data-r class="glass px-5 py-3 rounded-xl"><div class="mono">Engine</div><div class="text-xl font-extrabold">3.0L Turbo I6</div></div>
+      <div data-r class="glass px-5 py-3 rounded-xl"><div class="mono">Drive</div><div class="text-xl font-extrabold">Rear-wheel</div></div>
+      <div data-r class="glass px-5 py-3 rounded-xl"><div class="mono">Balance</div><div class="text-xl font-extrabold">50 : 50</div></div>
+    </div>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+      <div class="max-w-md">
+        <p data-r class="text-white/70 text-sm md:text-base leading-relaxed mb-6">A front-engine, rear-drive sports coupe shaped around balance, response and a connection between driver and road.</p>
+        <div data-r class="flex flex-wrap gap-3">
+          <a data-go href="#performance" class="btn bg-tred px-6 py-3.5 rounded-full text-xs font-extrabold tracking-widest"><span>EXPLORE THE MACHINE</span></a>
+          <a data-go href="#design" class="btn glass px-6 py-3.5 rounded-full text-xs font-extrabold tracking-widest"><span>DISCOVER THE DESIGN</span></a>
+        </div>
+      </div>
+      <div data-r class="hidden md:flex flex-col items-center gap-2 absolute left-1/2 -translate-x-1/2 bottom-8">
+        <span class="mono">Scroll</span><span class="bob block w-px h-10 bg-gradient-to-b from-tred to-transparent"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 DESIGN -->
+<section id="design" class="relative h-[170vh]">
+  <div class="stick px-5 md:px-10 pt-24 pb-8 flex flex-col justify-between">
+    <div>
+      <p data-r class="mono mb-4"><span class="text-tred">●</span> Chapter 02 / Exterior</p>
+      <h2 data-r class="font-black leading-[.88] tracking-tighter text-[12vw] md:text-[6.5vw]">SCULPTED<br>BY PURPOSE.</h2>
+    </div>
+    <div data-r class="lbl hidden md:flex" style="left:6%;top:44%"><span class="mono !text-white">Wide, planted stance</span><i></i></div>
+    <div data-r class="lbl hidden md:flex" style="left:36%;top:22%"><span class="mono !text-white">Fastback roofline</span><i></i></div>
+    <div data-r class="lbl hidden md:flex flex-row-reverse" style="right:6%;top:50%"><span class="mono !text-white">Long hood, short deck</span><i class="rotate-180"></i></div>
+    <p data-r class="max-w-sm text-white/70 text-sm md:text-base">Proportions first. Everything about the silhouette — from the long hood to the compact cabin — points to a car designed around the driver.</p>
+  </div>
+</section>
+
+<!-- 3 PERFORMANCE -->
+<section id="performance" class="relative h-[170vh]">
+  <div class="stick px-5 md:px-10 pt-24 pb-8 flex flex-col justify-between overflow-hidden">
+    <div>
+      <p data-r class="mono mb-4"><span class="text-tred">●</span> Chapter 03 / Performance</p>
+      <h2 data-r class="font-black leading-[.88] tracking-tighter text-[12vw] md:text-[6.5vw] md:text-right">POWER WITH<br>PRECISION.</h2>
+    </div>
+    <div data-r class="absolute left-0 top-[58%] w-full overflow-hidden opacity-[.12] pointer-events-none">
+      <div class="mq flex w-max font-black text-[9vw] md:text-[6vw] whitespace-nowrap tracking-tighter"><span>TURBO · INLINE-SIX · REAR-DRIVE · TURBO · INLINE-SIX · REAR-DRIVE · </span><span>TURBO · INLINE-SIX · REAR-DRIVE · TURBO · INLINE-SIX · REAR-DRIVE · </span></div>
+    </div>
+    <div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div data-r class="glass rounded-2xl p-5"><div class="text-4xl md:text-5xl font-black"><span data-count="3" data-dec="1">0</span><small class="text-lg text-tred"> L</small></div><div class="mono mt-2">Turbocharged displacement</div></div>
+        <div data-r class="glass rounded-2xl p-5"><div class="text-4xl md:text-5xl font-black"><span data-count="6">0</span><small class="text-lg text-tred"> cyl</small></div><div class="mono mt-2">Inline configuration</div></div>
+        <div data-r class="glass rounded-2xl p-5"><div class="text-4xl md:text-5xl font-black"><span data-count="50">0</span><small class="text-lg text-tred">:</small><span data-count="50">0</span></div><div class="mono mt-2">Front / rear weight balance</div></div>
+        <div data-r class="glass rounded-2xl p-5"><div class="text-4xl md:text-5xl font-black"><span data-count="2">0</span><small class="text-lg text-tred"> seats</small></div><div class="mono mt-2">Driver-focused cockpit</div></div>
+      </div>
+      <p data-r class="mt-3 text-[11px] text-white/40">Figures are general to the GR Supra 3.0. Output and acceleration vary by market and model year — confirm with Toyota.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 INTERIOR -->
+<section id="interior" class="relative h-[170vh]">
+  <div class="stick px-5 md:px-10 pt-24 pb-8 flex flex-col justify-between">
+    <div>
+      <p data-r class="mono mb-4"><span class="text-tred">●</span> Chapter 04 / Interior &amp; Technology</p>
+      <h2 data-r class="font-black leading-[.88] tracking-tighter text-[11vw] md:text-[5.5vw]">INTELLIGENCE IN<br>EVERY DETAIL.</h2>
+    </div>
+    <div class="grid md:grid-cols-[1.6fr_1fr] gap-4 items-end">
+      <div data-r class="glass rounded-3xl p-3 relative">
+        <div id="cockpit" class="relative w-full" style="aspect-ratio:2/1">
+          <svg viewBox="0 0 800 400" class="absolute inset-0 w-full h-full" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5">
+            <path d="M20 120 Q400 10 780 120 L780 150 Q400 50 20 150Z"/>
+            <path d="M0 400 L0 190 Q400 90 800 190 L800 400Z" fill="rgba(255,255,255,.03)"/>
+            <defs>
+              <linearGradient id="rimG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a2a30"/><stop offset=".55" stop-color="#141417"/><stop offset="1" stop-color="#0b0b0d"/></linearGradient>
+              <linearGradient id="hoodG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#050506" stop-opacity=".95"/><stop offset="1" stop-color="#050506" stop-opacity="0"/></linearGradient>
+              <radialGradient id="glowG"><stop offset="0" stop-color="#EB0A1E" stop-opacity=".30"/><stop offset="1" stop-color="#EB0A1E" stop-opacity="0"/></radialGradient>
+              <radialGradient id="shadeG"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".8" stop-color="#000" stop-opacity="0"/><stop offset=".89" stop-color="#000" stop-opacity=".5"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+            </defs>
+
+            <!-- instrument cluster, seen over the top of the rim -->
+            <path d="M168 206V176Q168 160 186 158Q250 151 314 158Q332 160 332 176V206Z" fill="url(#hoodG)" stroke="none"/>
+            <ellipse cx="250" cy="182" rx="92" ry="42" fill="url(#glowG)" stroke="none"/>
+            <path d="M168 204V176Q168 160 186 158Q250 151 314 158Q332 160 332 176V204" stroke="rgba(255,255,255,.32)" stroke-width="1.2"/>
+            <g stroke-width="1">
+              <path d="M231.29 192.80A21.6 21.6 0 1 1 271.54 180.38" stroke="rgba(255,255,255,.4)"/>
+              <path d="M233.62 185.74L231.09 186.32 M234.36 175.86L231.94 174.91 M240.54 168.12L239.07 165.97 M250.00 165.20L250.00 162.60 M259.46 168.12L260.93 165.97 M265.64 175.86L268.06 174.91" stroke="rgba(255,255,255,.35)" stroke-width=".8"/>
+              <path d="M236.84 189.60L233.20 191.70 M234.84 180.86L230.65 180.55 M238.12 172.52L234.83 169.90 M245.52 167.48L244.28 163.46 M254.48 167.48L255.72 163.46 M261.88 172.52L265.17 169.90" stroke="rgba(255,255,255,.7)"/>
+              <path d="M265.16 180.86L269.35 180.55 M266.38 185.74L268.91 186.32 M263.16 189.60L266.80 191.70" stroke="#EB0A1E"/>
+              <path d="M271.54 180.38A21.6 21.6 0 0 1 268.71 192.80" stroke="#EB0A1E" stroke-width="1.6"/>
+              <circle cx="206" cy="187" r="11" stroke="rgba(255,255,255,.3)"/><path d="M198.5 181.5A9.5 9.5 0 0 1 213.5 181.5" stroke="rgba(255,255,255,.45)" stroke-width=".8" stroke-dasharray="1 1.8"/><path d="M206 187l-4.5-5" stroke="rgba(255,255,255,.7)" stroke-linecap="round"/>
+              <circle cx="294" cy="187" r="11" stroke="rgba(255,255,255,.3)"/><path d="M286.5 181.5A9.5 9.5 0 0 1 301.5 181.5" stroke="rgba(255,255,255,.45)" stroke-width=".8" stroke-dasharray="1 1.8"/><path d="M294 187l3.5-6" stroke="rgba(255,255,255,.7)" stroke-linecap="round"/>
+              <g id="needle" transform="rotate(-94 250 182)"><path d="M250 190V165" stroke="#EB0A1E" stroke-width="1.7" stroke-linecap="round"/></g>
+              <circle cx="250" cy="182" r="2.8" fill="#EB0A1E" stroke="none"/>
+            </g>
+
+            <!-- steering wheel -->
+            <circle cx="250" cy="288" r="108" fill="url(#shadeG)" stroke="none"/>
+            <g id="wheel" transform="rotate(0 250 288)"><g transform="translate(250 288)" stroke-linejoin="round">
+              <!-- paddle shifters, behind the rim -->
+              <g class="pad" stroke="rgba(255,255,255,.5)" stroke-width="1.2" fill="#141417"><path d="M-90.06 -47.89A102 102 0 0 1 -57.04 -84.56L-50.89 -75.44A91 91 0 0 0 -80.35 -42.72Z"/><path d="M57.04 -84.56A102 102 0 0 1 90.06 -47.89L80.35 -42.72A91 91 0 0 0 50.89 -75.44Z"/></g>
+              <!-- spokes + hub -->
+              <path d="M-84 -6L-32 -14Q0 -28 32 -14L84 -6V22H36L24 84H-24L-36 22H-84Z" fill="#141417" stroke="rgba(255,255,255,.5)" stroke-width="1.4"/>
+              <!-- rim -->
+              <path fill-rule="evenodd" d="M-95 0A95 95 0 1 0 95 0A95 95 0 1 0 -95 0ZM-80 0A80 80 0 1 0 80 0A80 80 0 1 0 -80 0Z" fill="url(#rimG)" stroke="rgba(255,255,255,.6)" stroke-width="1.5"/>
+              <circle r="87.5" stroke="rgba(255,255,255,.2)" stroke-width="1" stroke-dasharray="1.8 3.2"/>
+              <g stroke="rgba(255,255,255,.38)" stroke-width="1.7" stroke-linecap="round" stroke-dasharray="0 3.6">
+                <path d="M-76.58 -35.71A84.5 84.5 0 0 0 -76.58 35.71"/><path d="M-82.02 -38.25A90.5 90.5 0 0 0 -82.02 38.25"/><path d="M76.58 -35.71A84.5 84.5 0 0 1 76.58 35.71"/><path d="M82.02 -38.25A90.5 90.5 0 0 1 82.02 38.25"/>
+              </g>
+              <rect x="-2.6" y="-93" width="5.2" height="12" rx="1.2" fill="#EB0A1E" stroke="none"/>
+              <!-- spoke controls -->
+              <g class="ctl" stroke="rgba(255,255,255,.5)" stroke-width="1.1">
+                <circle cx="-64" cy="8" r="2.6"/><circle cx="-52" cy="8" r="2.6"/><circle cx="-58" cy="2" r="2.6"/><circle cx="-58" cy="14" r="2.6"/>
+                <circle cx="56" cy="8" r="6.5"/><circle cx="56" cy="8" r="2" fill="rgba(255,255,255,.5)"/><rect x="67" y="5.5" width="10" height="5" rx="2.5"/>
+              </g>
+              <!-- hub -->
+              <circle r="21" fill="#0d0d0f" stroke="rgba(255,255,255,.55)" stroke-width="1.4"/>
+              <circle r="17" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+              <g transform="translate(-10.6 -7.3) scale(.28)" stroke="#EB0A1E" stroke-width="4.2"><ellipse cx="38" cy="26" rx="35" ry="23"/><ellipse cx="38" cy="26" rx="12" ry="22"/><ellipse cx="38" cy="14" rx="22" ry="8"/></g>
+            </g></g>
+
+            <rect x="400" y="210" width="190" height="95" rx="10" stroke="#EB0A1E"/>
+            <path d="M620 230h120M620 250h120M620 270h120"/>
+            <path d="M360 340h90M400 320v40" />
+          </svg>
+          <button class="hot" data-h="0" style="left:42%;top:42.5%" aria-label="Driver display"></button>
+          <button id="hotWheel" class="hot" data-h="4" style="left:24%;top:74%" aria-label="Steering wheel"></button>
+          <button class="hot" data-h="1" style="left:62%;top:63%" aria-label="Infotainment"></button>
+          <button class="hot" data-h="2" style="left:15%;top:88%" aria-label="Seating"></button>
+          <button class="hot" data-h="3" style="left:51%;top:88%" aria-label="Controls"></button>
+        </div>
+      </div>
+      <div data-r id="info" class="glass rounded-3xl p-6">
+        <div class="mono mb-2" id="it">Tap a hotspot</div>
+        <p id="ib" class="text-white/75 text-sm leading-relaxed min-h-[5rem]">Explore the cockpit. Each marker reveals a part of the driver-focused interior.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 FINAL -->
+<section id="final" class="relative h-[140vh]">
+  <div class="stick px-5 md:px-10 pt-24 pb-8 flex flex-col items-center justify-between text-center">
+    <div>
+      <p data-r class="mono mb-4"><span class="text-tred">●</span> Chapter 05</p>
+      <h2 data-r class="font-black leading-[.88] tracking-tighter text-[14vw] md:text-[8vw]">THE ROAD<br>IS <span class="text-tred">YOURS.</span></h2>
+    </div>
+    <div data-r class="flex flex-col items-center gap-4">
+      <a href="https://www.toyota.com/" target="_blank" rel="noopener" class="btn bg-tred px-10 py-5 rounded-full text-sm font-extrabold tracking-[.2em] shadow-[0_0_60px_rgba(235,10,30,.45)]"><span>BUILD YOUR TOYOTA</span></a>
+      <button id="again" class="mono hover:text-white transition">↑ Replay the journey</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="relative z-10 bg-black border-t border-white/10 px-5 md:px-10 py-10 grid md:grid-cols-3 gap-8 text-sm text-white/60">
+  <div><div class="font-black tracking-[.3em] text-white mb-2">TOYOTA</div>Concept landing page. Not an official Toyota website.</div>
+  <div class="flex gap-6 mono"><a data-go href="#design" class="hover:text-white">Design</a><a data-go href="#performance" class="hover:text-white">Performance</a><a data-go href="#interior" class="hover:text-white">Interior</a></div>
+  <div class="md:text-right text-xs">The 3D car is a stylised procedural model. Drop in a GLB via <code class="text-white/80">MODEL_URL</code> in the script.</div>
+</footer>
+
+<!-- config + back to top -->
+<div id="cfg" class="fixed right-4 bottom-4 z-40 glass rounded-full pl-4 pr-3 py-2 flex items-center gap-3" style="margin-bottom:env(safe-area-inset-bottom,0px)">
+  <span id="cname" class="mono !text-white hidden sm:block w-16">Red</span><div id="sws" class="flex gap-2"></div>
+</div>
+<button id="top" aria-label="Back to top" class="fixed left-4 bottom-4 z-40 glass w-11 h-11 rounded-full grid place-items-center opacity-0 pointer-events-none transition" style="margin-bottom:env(safe-area-inset-bottom,0px)">↑</button>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/objects/Reflector.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(()=>{
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches, MOB=innerWidth<768;
+const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+const MODEL_URL='assets/toyota-supra.glb'; // Toyota Supra A80 (1993) by Lexyc16, CC-BY-NC-4.0 — https://sketchfab.com/3d-models/toyota-supra-a80-1993-dd897d7823784bc5893c183c1328e8cb
+gsap.registerPlugin(ScrollTrigger);
+
+/* ======================================================================
+   CLOTH SIMULATION (baked)
+   The cloth is a Verlet particle grid (structural / shear / bend springs)
+   that collides with a signed-distance field of the real car. The SDF is
+   built from a top-down height capture of the GLB. The sheet is dropped
+   onto the car, allowed to settle, then pulled from its rear hem by three
+   "crew" anchor points. Every few steps the particle positions are
+   recorded; scroll position later scrubs through those frames, so the
+   reveal is deterministic and reverses exactly when scrolling up.
+   This function is self-contained so it can run inside a Web Worker.
+   ====================================================================== */
+function* bakeCloth(P){
+  const {RX,RZ,x0,x1,z0,z1,hmax}=P,INF=1e20;
+  /* --- heightfield: dilate (close slivers) then soften --- */
+  const H0=P.H,Hd=new Float32Array(RX*RZ),H=new Float32Array(RX*RZ);
+  for(let r=0;r<RZ;r++)for(let c=0;c<RX;c++){let m=0;
+    for(let dr=-2;dr<=2;dr++)for(let dc=-2;dc<=2;dc++){const rr=r+dr,cc=c+dc;if(rr<0||cc<0||rr>=RZ||cc>=RX)continue;const v=H0[rr*RX+cc];if(v>m)m=v}Hd[r*RX+c]=m}
+  for(let r=0;r<RZ;r++)for(let c=0;c<RX;c++){let s=0,k=0;
+    for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const rr=r+dr,cc=c+dc;if(rr<0||cc<0||rr>=RZ||cc>=RX)continue;s+=Hd[rr*RX+cc];k++}H[r*RX+c]=s/k}
+  const hAt=(x,z)=>{const fc=(x-x0)/(x1-x0)*RX-.5,fr=(z1-z)/(z1-z0)*RZ-.5;
+    if(fc<-1||fr<-1||fc>RX||fr>RZ)return 0;
+    const c0=Math.max(0,Math.min(RX-1,Math.floor(fc))),r0=Math.max(0,Math.min(RZ-1,Math.floor(fr))),c1=Math.min(RX-1,c0+1),r1=Math.min(RZ-1,r0+1),
+      a=Math.max(0,Math.min(1,fc-c0)),b=Math.max(0,Math.min(1,fr-r0));
+    return (H[r0*RX+c0]*(1-a)+H[r0*RX+c1]*a)*(1-b)+(H[r1*RX+c0]*(1-a)+H[r1*RX+c1]*a)*b};
+
+  /* --- 3D signed distance field (exact Euclidean DT, Felzenszwalb) --- */
+  const C=P.cell,pad=.4,gx0=x0-pad,gz0=z0-pad,NX=Math.ceil((x1-x0+2*pad)/C),NZ=Math.ceil((z1-z0+2*pad)/C),NY=Math.ceil((hmax+.35)/C),N=NX*NY*NZ;
+  const gx1=gx0+NX*C,gz1=gz0+NZ*C,gy1=NY*C;
+  const solid=new Uint8Array(N);
+  for(let iz=0;iz<NZ;iz++)for(let ix=0;ix<NX;ix++){const h=hAt(gx0+(ix+.5)*C,gz0+(iz+.5)*C);
+    for(let iy=0;iy<NY;iy++)if((iy+.5)*C<h)solid[(iz*NY+iy)*NX+ix]=1}
+  const M=Math.max(NX,NY,NZ),fl=new Float64Array(M),dl=new Float64Array(M),vv=new Int32Array(M),zz=new Float64Array(M+1);
+  function dt1(n){let k=0;vv[0]=0;zz[0]=-INF;zz[1]=INF;
+    for(let q=1;q<n;q++){let s=((fl[q]+q*q)-(fl[vv[k]]+vv[k]*vv[k]))/(2*q-2*vv[k]);
+      while(s<=zz[k]){k--;s=((fl[q]+q*q)-(fl[vv[k]]+vv[k]*vv[k]))/(2*q-2*vv[k])}
+      k++;vv[k]=q;zz[k]=s;zz[k+1]=INF}
+    k=0;for(let q=0;q<n;q++){while(zz[k+1]<q)k++;dl[q]=(q-vv[k])*(q-vv[k])+fl[vv[k]]}}
+  function edt(feat){const d=new Float64Array(N);for(let i=0;i<N;i++)d[i]=solid[i]===feat?0:INF;
+    const pass=(n,stride,outer)=>{for(const base of outer){for(let q=0;q<n;q++)fl[q]=d[base+q*stride];dt1(n);for(let q=0;q<n;q++)d[base+q*stride]=dl[q]}};
+    const ox=[],oy=[],oz=[];
+    for(let iz=0;iz<NZ;iz++)for(let iy=0;iy<NY;iy++)ox.push((iz*NY+iy)*NX);
+    for(let iz=0;iz<NZ;iz++)for(let ix=0;ix<NX;ix++)oy.push(iz*NY*NX+ix);
+    for(let iy=0;iy<NY;iy++)for(let ix=0;ix<NX;ix++)oz.push(iy*NX+ix);
+    pass(NX,1,ox);pass(NY,NX,oy);pass(NZ,NX*NY,oz);return d}
+  const dOut=edt(1);yield .04;const dIn=edt(0);yield .08;
+  const sdf=new Float32Array(N);
+  for(let i=0;i<N;i++)sdf[i]=solid[i]?-(Math.sqrt(dIn[i])-.5)*C:(Math.sqrt(dOut[i])-.5)*C;
+  const samp=(x,y,z)=>{let fx=(x-gx0)/C-.5,fy=y/C-.5,fz=(z-gz0)/C-.5;
+    if(fx<0)fx=0;if(fz<0)fz=0;if(fy<0)fy=0;if(fx>NX-1.001)fx=NX-1.001;if(fz>NZ-1.001)fz=NZ-1.001;if(fy>NY-1.001)fy=NY-1.001;
+    const ix=fx|0,iy=fy|0,iz=fz|0,a=fx-ix,b=fy-iy,c=fz-iz,i0=(iz*NY+iy)*NX+ix,sy=NX,sz=NX*NY;
+    const c00=sdf[i0]*(1-a)+sdf[i0+1]*a,c10=sdf[i0+sy]*(1-a)+sdf[i0+sy+1]*a,c01=sdf[i0+sz]*(1-a)+sdf[i0+sz+1]*a,c11=sdf[i0+sz+sy]*(1-a)+sdf[i0+sz+sy+1]*a;
+    return (c00*(1-b)+c10*b)*(1-c)+(c01*(1-b)+c11*b)*c};
+
+  /* --- cloth grid --- */
+  const L=(x1-x0)+2*hmax*.95+.5,W=(z1-z0)+2*hmax*1.06+.45;
+  const NU=Math.round(L/P.sp)+1,NV=Math.round(W/P.sp)+1,n=NU*NV,dx=L/(NU-1),dz=W/(NV-1),cx=(x0+x1)/2;
+  const pos=new Float32Array(n*3),prv=new Float32Array(n*3),inv=new Float32Array(n).fill(1);
+  let seed=7;const rnd=()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+  for(let i=0;i<NU;i++)for(let j=0;j<NV;j++){const k=(i*NV+j)*3,u=i/(NU-1)-.5,v=j/(NV-1)-.5;
+    const ca=Math.cos(.045),sa=Math.sin(.045),px=u*L,pz=v*W;pos[k]=cx+.08+px*ca-pz*sa;pos[k+1]=hmax+.1-(u*u+v*v)*.3+(rnd()-.5)*.05;pos[k+2]=.05+px*sa+pz*ca;}
+  // weighted hem (as on real car covers): heavier edge rows hang straighter and pull folds down
+  for(let i=0;i<NU;i++)for(let j=0;j<NV;j++){const e=Math.min(i,j,NU-1-i,NV-1-j);if(e<2)inv[i*NV+j]=e?.5:.2}
+  prv.set(pos);
+  const CA=[],CB=[],CR=[],CK=[],id=(i,j)=>i*NV+j;
+  const link=(a,b,k)=>{const ax=pos[a*3]-pos[b*3],az=pos[a*3+2]-pos[b*3+2];CA.push(a);CB.push(b);CR.push(Math.hypot(ax,az));CK.push(k)};
+  for(let i=0;i<NU;i++)for(let j=0;j<NV;j++){
+    if(i+1<NU)link(id(i,j),id(i+1,j),1);if(j+1<NV)link(id(i,j),id(i,j+1),1);
+    if(i+1<NU&&j+1<NV){link(id(i,j),id(i+1,j+1),.85);link(id(i+1,j),id(i,j+1),.85)}
+    if(i+2<NU)link(id(i,j),id(i+2,j),.22);if(j+2<NV)link(id(i,j),id(i,j+2),.22)}
+  const ca=Int32Array.from(CA),cb=Int32Array.from(CB),cr=Float32Array.from(CR),ck=Float32Array.from(CK),NC=ca.length;
+
+  const OFF=.058,FT=.012,dt=P.dt,g=-9.81*dt*dt;
+  function collide(){
+    for(let i=0;i<n;i++){if(!inv[i])continue;const k=i*3;let x=pos[k],y=pos[k+1],z=pos[k+2];
+      if(x>gx0&&x<gx1&&z>gz0&&z<gz1&&y<gy1){const s=samp(x,y,z);
+        if(s<OFF){const e=C*.7;let nx=samp(x+e,y,z)-samp(x-e,y,z),ny=samp(x,y+e,z)-samp(x,y-e,z),nz=samp(x,y,z+e)-samp(x,y,z-e);
+          let l=Math.hypot(nx,ny,nz);if(l<1e-7){nx=0;ny=1;nz=0}else{nx/=l;ny/=l;nz/=l}
+          const d=OFF-s;x+=nx*d;y+=ny*d;z+=nz*d;
+          const vx=x-prv[k],vy=y-prv[k+1],vz=z-prv[k+2],vn=vx*nx+vy*ny+vz*nz,MU=.12;
+          prv[k]+=nx*vn+(vx-nx*vn)*MU;prv[k+1]+=ny*vn+(vy-ny*vn)*MU;prv[k+2]+=nz*vn+(vz-nz*vn)*MU}}
+      if(y<FT){y=FT;prv[k+1]=y;prv[k]+=(x-prv[k])*.55;prv[k+2]+=(z-prv[k+2])*.55}
+      pos[k]=x;pos[k+1]=y;pos[k+2]=z}}
+  function relax(){for(let c=0;c<NC;c++){const a=ca[c]*3,b=cb[c]*3,wa=inv[ca[c]],wb=inv[cb[c]],w=wa+wb;if(!w)continue;
+      const ex=pos[b]-pos[a],ey=pos[b+1]-pos[a+1],ez=pos[b+2]-pos[a+2],d=Math.sqrt(ex*ex+ey*ey+ez*ez);if(d<1e-9)continue;
+      const f=(d-cr[c])/(d*w)*ck[c];pos[a]+=ex*f*wa;pos[a+1]+=ey*f*wa;pos[a+2]+=ez*f*wa;pos[b]-=ex*f*wb;pos[b+1]-=ey*f*wb;pos[b+2]-=ez*f*wb}}
+  let anchors=null; // [{c, grp:[{i,ox,oy,oz}], path:fn, rest:Float32Array}]
+  function tether(){for(const A of anchors){const ak=A.c*3,axp=pos[ak],ayp=pos[ak+1],azp=pos[ak+2],R=A.rest;
+      for(let i=0;i<n;i++){if(!inv[i])continue;const k=i*3,ex=pos[k]-axp,ey=pos[k+1]-ayp,ez=pos[k+2]-azp,d=Math.sqrt(ex*ex+ey*ey+ez*ez);
+        if(d>R[i]){const f=(d-R[i])/d;pos[k]-=ex*f;pos[k+1]-=ey*f;pos[k+2]-=ez*f}}}}
+  function step(damp,t){
+    for(let i=0;i<n;i++){if(!inv[i])continue;const k=i*3;
+      const vx=(pos[k]-prv[k])*damp,vy=(pos[k+1]-prv[k+1])*damp,vz=(pos[k+2]-prv[k+2])*damp;
+      prv[k]=pos[k];prv[k+1]=pos[k+1];prv[k+2]=pos[k+2];pos[k]+=vx;pos[k+1]+=vy+g;pos[k+2]+=vz}
+    if(anchors)for(const A of anchors){const p=A.path(t);for(const q of A.grp){const k=q.i*3;pos[k]=p[0]+q.ox;pos[k+1]=p[1]+q.oy;pos[k+2]=p[2]+q.oz}}
+    const half=P.iters>>1;for(let it=0;it<P.iters;it++){relax();if(it===half-1)collide()}if(anchors)tether();collide()}
+
+  /* 1. drape: drop the sheet onto the car and let it settle */
+  const S1=Math.round(2.4/dt);for(let s=0;s<S1;s++){step(s<S1-Math.round(.9/dt)?.985:.86,0);if(s%25===0)yield .08+.22*s/S1}
+
+  /* 2. pull: crew grab the rear hem, lift it, and walk backwards */
+  const T=[0,1.1,5.3,6.9,8.6],TT=T[T.length-1],S2=Math.round(TT/dt),KF=P.every,F=Math.floor(S2/KF)+1;
+  const hermite=(K)=>{const m=K.map((_,i)=>i===0||i===K.length-1?[0,0,0]:[0,1,2].map(a=>(K[i+1][a]-K[i-1][a])/(T[i+1]-T[i-1])));
+    return t=>{if(t>=TT)return K[K.length-1];let i=0;while(t>T[i+1])i++;const h=T[i+1]-T[i],s=(t-T[i])/h,s2=s*s,s3=s2*s,
+      h00=2*s3-3*s2+1,h10=s3-2*s2+s,h01=-2*s3+3*s2,h11=s3-s2;return[0,1,2].map(a=>h00*K[i][a]+h10*h*m[i][a]+h01*K[i+1][a]+h11*h*m[i+1][a])}};
+  anchors=[.2,.5,.8].map(fr=>{const jc=Math.round(fr*(NV-1)),c=id(0,jc),k=c*3,s0=[pos[k],pos[k+1],pos[k+2]],zc=s0[2];
+    const K=[s0,[x0-.5,hmax*1.15,zc*.85],[x0-4.1,hmax*1.05,zc*.55],[x0-6.9,hmax*.5,zc*.45],[x0-20,.3,zc*.45]];
+    const grp=[];for(const [di,dj] of [[0,0],[0,-1],[0,1],[1,0]]){const ii=di,jj=jc+dj;if(jj<0||jj>=NV)continue;const q=id(ii,jj),qk=q*3;
+      grp.push({i:q,ox:(pos[qk]-pos[k])*.8,oy:(pos[qk+1]-pos[k+1])*.8,oz:(pos[qk+2]-pos[k+2])*.8});inv[q]=0}
+    const rest=new Float32Array(n);for(let i=0;i<NU;i++)for(let j=0;j<NV;j++)rest[id(i,j)]=Math.hypot(i*dx,(j-jc)*dz)*1.03+.02;
+    return{c,grp,path:hermite(K),rest}});
+  const frames=new Float32Array(F*n*3);frames.set(pos,0);let f=1;
+  for(let s=1;s<=S2;s++){step(.992,s*dt);if(s%KF===0&&f<F){frames.set(pos,f*n*3);f++}if(s%25===0)yield .3+.7*s/S2}
+  return{frames,F,n,NU,NV}
+}
+
+/* Run the bake in a Web Worker; fall back to time-sliced main-thread work if workers are unavailable */
+function runBake(P,onProg){
+  return new Promise((resolve,reject)=>{
+    let settled=false;
+    const main=()=>{if(settled)return;settled=true;const g=bakeCloth(P);
+      const slice=()=>{const t0=performance.now();try{while(performance.now()-t0<14){const r=g.next();if(r.done)return resolve(r.value);onProg(r.value)}}catch(e){return reject(e)}setTimeout(slice,0)};slice()};
+    let w,watch;
+    try{
+      const src=bakeCloth.toString()+'\nonmessage=e=>{try{const g=bakeCloth(e.data);let r;while(!(r=g.next()).done)postMessage({p:r.value});const o=r.value;postMessage({done:o},[o.frames.buffer])}catch(err){postMessage({err:String(err)})}}';
+      w=new Worker(URL.createObjectURL(new Blob([src],{type:'text/javascript'})));
+    }catch(e){return main()}
+    const bail=()=>{clearTimeout(watch);try{w.terminate()}catch(e){}main()};
+    watch=setTimeout(bail,3500);           // no reply from the worker (e.g. blocked by CSP) → do it here
+    w.onerror=bail;
+    w.onmessage=e=>{clearTimeout(watch);const d=e.data;
+      if(d.err){bail();return}
+      if(d.done){settled=true;w.terminate();resolve(d.done)}else onProg(d.p)};
+    w.postMessage(P);
+  });
+}
+
+/* Top-down height capture of the car (in its own local frame) → heightfield for the SDF */
+function captureHeight(renderer,obj){
+  const rot=obj.rotation.y;obj.rotation.y=0;obj.updateMatrixWorld(true);
+  const bb=new THREE.Box3().setFromObject(obj),pad=.05;
+  const x0=bb.min.x-pad,x1=bb.max.x+pad,z0=bb.min.z-pad,z1=bb.max.z+pad,hmax=bb.max.y,HM=hmax+.5;
+  const RX=256,RZ=Math.max(48,Math.round(RX*(z1-z0)/(x1-x0)));
+  const rt=new THREE.WebGLRenderTarget(RX,RZ,{minFilter:THREE.NearestFilter,magFilter:THREE.NearestFilter,depthBuffer:true});
+  const cam=new THREE.OrthographicCamera(x0,x1,-z0,-z1,.01,HM+2);cam.position.set(0,HM+1,0);cam.up.set(0,0,-1);cam.lookAt(0,0,0);
+  const mat=new THREE.ShaderMaterial({side:THREE.DoubleSide,uniforms:{hm:{value:HM}},
+    vertexShader:'varying float vH;void main(){vec4 w=modelMatrix*vec4(position,1.);vH=w.y;gl_Position=projectionMatrix*viewMatrix*w;}',
+    fragmentShader:'uniform float hm;varying float vH;void main(){float v=clamp(vH/hm,0.,1.)*255.;gl_FragColor=vec4(floor(v)/255.,fract(v),0.,1.);}'});
+  const tmp=new THREE.Scene(),parent=obj.parent;tmp.add(obj);tmp.overrideMaterial=mat;
+  const cc=renderer.getClearColor(new THREE.Color()),ca=renderer.getClearAlpha();
+  renderer.setRenderTarget(rt);renderer.setClearColor(0x000000,0);renderer.clear();renderer.render(tmp,cam);
+  const px=new Uint8Array(RX*RZ*4);renderer.readRenderTargetPixels(rt,0,0,RX,RZ,px);
+  renderer.setRenderTarget(null);renderer.setClearColor(cc,ca);
+  tmp.remove(obj);if(parent)parent.add(obj);obj.rotation.y=rot;rt.dispose();mat.dispose();
+  // readPixels row 0 is the bottom of the image (= max z); bakeCloth expects row 0 = z1
+  const H=new Float32Array(RX*RZ);
+  for(let r=0;r<RZ;r++)for(let c=0;c<RX;c++){const k=(r*RX+c)*4;if(px[k+3]>0)H[r*RX+c]=(px[k]+px[k+1]/255)/255*HM}
+  return{H,RX,RZ,x0,x1,z0,z1,hmax};
+}
+
+/* Satin cover texture: graphite weave with a red hem band */
+function clothTexture(){
+  const c=document.createElement('canvas');c.width=1024;c.height=512;const x=c.getContext('2d');
+  x.fillStyle='#2a2a31';x.fillRect(0,0,1024,512);
+  const im=x.getImageData(0,0,1024,512),d=im.data;
+  for(let y=0;y<512;y++)for(let i=0;i<1024;i++){const k=(y*1024+i)*4,w=((i&1)^(y&1))?5:-5,n=(Math.random()-.5)*10+w;d[k]+=n;d[k+1]+=n;d[k+2]+=n+1}
+  x.putImageData(im,0,0);
+  const band=(m,t,col)=>{x.strokeStyle=col;x.lineWidth=t;x.strokeRect(m,m,1024-2*m,512-2*m)};
+  band(14,9,'#b10716');band(24,1.5,'rgba(220,220,230,.55)');
+  const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=4;return t;
+}
+
+/* ---------- paint options ---------- */
+const COLORS=[['Red','#c4081a'],['Pearl','#e9e9ec'],['Obsidian','#0b0b0d'],['Silver','#9aa0a8'],['Yellow','#e3b400']];
+let bodyMats=[];
+
+/* ---------- three.js ---------- */
+const S={rot:-.55,cy:1.3,cz:8.5,fov:32,cop:1,ghost:.07,ring:0,iz:5,ir:1.2};
+let renderer,scene,camera,car,ring,ok=true;
+const mouse={x:0,y:0,sx:0,sy:0};
+try{
+  renderer=new THREE.WebGLRenderer({canvas:$('#gl'),antialias:!MOB,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,MOB?1.5:2));
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;renderer.outputEncoding=THREE.sRGBEncoding;
+  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+}catch(e){ok=false;$('#gl').remove();const f=$('#fallback');f.classList.remove('hidden');f.classList.add('grid')}
+
+function tex(stops){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d'),g=x.createRadialGradient(128,128,0,128,128,128);stops.forEach(s=>g.addColorStop(s[0],s[1]));x.fillStyle=g;x.fillRect(0,0,256,256);return new THREE.CanvasTexture(c)}
+
+/* Lofted body: smooth superellipse cross-sections along the car's length */
+function loft(P,yb,p,mat,N=60,M=40){
+  const cv=new THREE.CatmullRomCurve3(P.map(q=>new THREE.Vector3(...q))),pos=[],idx=[],R=M+1;
+  for(let i=0;i<=N;i++){const q=cv.getPoint(i/N),b=typeof yb==='function'?yb(q.x,q.y):yb,yc=(b+q.y)/2,h=(q.y-b)/2;
+    for(let j=0;j<=M;j++){const a=-Math.PI/2+j/M*Math.PI*2,c=Math.cos(a),s=Math.sin(a);
+      pos.push(q.x,yc+h*Math.sign(s)*Math.pow(Math.abs(s),2/p),q.z*Math.sign(c)*Math.pow(Math.abs(c),2/p))}}
+  for(let i=0;i<N;i++)for(let j=0;j<M;j++){const a=i*R+j,b=a+R;idx.push(a,b,a+1,b,b+1,a+1)}
+  [0,N].forEach(i=>{const n=pos.length/3,r=pos.slice(i*R*3,i*R*3+3);let yy=0;for(let j=0;j<R;j++)yy+=pos[(i*R+j)*3+1];pos.push(r[0],yy/R,0);
+    for(let j=0;j<M;j++)idx.push(n,i*R+j,i*R+j+1)});
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setIndex(idx);g.computeVertexNormals();
+  return new THREE.Mesh(g,mat);
+}
+function buildCar(){
+  const g=new THREE.Group(),DS=THREE.DoubleSide;
+  const paint=new THREE.MeshPhysicalMaterial({color:COLORS[0][1],metalness:.55,roughness:.28,clearcoat:1,clearcoatRoughness:.03,side:DS});bodyMats=[paint];
+  const M=(c,r=.6,m=.3)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m}),dark=M(0x08080a),chrome=M(0xd8dce2,.15,1),gun=M(0x33363b,.3,1);
+  const glass=new THREE.MeshPhysicalMaterial({color:0x04060a,metalness:.95,roughness:.04,clearcoat:1,side:DS});
+  const add=(geo,mat,x,y,z,rx=0,ry=0,rz=0)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.rotation.set(rx,ry,rz);g.add(m);return m};
+  const B=(w,h,d)=>new THREE.BoxGeometry(w,h,d);
+  // body, glasshouse, roof panel
+  g.add(loft([[-2.28,.8,.62],[-2.1,.95,.86],[-1.5,1.02,.95],[-.5,.98,.9],[.6,.96,.89],[1.3,.84,.9],[1.9,.66,.85],[2.28,.48,.66]],x=>.3+Math.max(0,x-1.9)*.5+Math.max(0,-2-x)*.5,2.7,paint));
+  g.add(loft([[-1.3,.98,.58],[-1,1.28,.66],[-.6,1.41,.69],[-.1,1.45,.7],[.3,1.42,.68],[.7,1.28,.64],[1.05,1.02,.58]],.86,2.3,glass));
+  g.add(loft([[-.8,1.38,.46],[-.5,1.45,.5],[-.1,1.485,.5],[.3,1.45,.48],[.55,1.39,.44]],(x,yt)=>yt-.07,3,paint));
+  add(B(4.2,.14,1.55),dark,0,.28,0);
+  // front: grille, intakes, headlamps, Toyota emblem
+  add(B(.05,.14,.62),dark,2.27,.42,0);[1,-1].forEach(s=>{add(B(.05,.1,.3),dark,2.22,.36,s*.52);
+    add(B(.14,.07,.04),dark,2.0,.66,s*.62,0,s>0?-.45:.45,0);add(B(.05,.045,.38),new THREE.MeshBasicMaterial({color:new THREE.Color(4,4,4.6)}),2.1,.67,s*.6,0,s>0?-.45:.45,0)});
+  add(new THREE.TorusGeometry(.07,.01,8,36),chrome,2.29,.58,0,0,Math.PI/2,0).scale.y=.66;
+  add(new THREE.TorusGeometry(.035,.008,8,24),chrome,2.29,.58,0,0,Math.PI/2,0).scale.x=.5;
+  add(B(.3,.04,1.5),dark,2.25,.33,0);
+  // rear: lamps, duck-tail, diffuser, exhausts
+  const red=new THREE.MeshBasicMaterial({color:new THREE.Color(3,0,.08)});
+  [1,-1].forEach(s=>{add(B(.05,.07,.5),red,-2.29,.86,s*.42);add(new THREE.CylinderGeometry(.055,.055,.18,18),chrome,-2.3,.38,s*.5,0,0,Math.PI/2);
+    add(B(.04,.04,.12),dark,.6,1.03,s*.7);add(B(.16,.08,.12),paint,.6,1.06,s*.8)});
+  add(B(.04,.03,.5),red,-2.29,.86,0);add(B(.4,.045,1.55),paint,-2.02,1.0,0,0,0,.08);add(B(.25,.1,1.3),dark,-2.2,.34,0);
+  // wheels
+  const wheel=(x,z)=>{const w=new THREE.Group(),d=Math.sign(z),rx=Math.PI/2;
+    w.add(new THREE.Mesh(new THREE.CylinderGeometry(.4,.4,.3,44).rotateX(rx),M(0x070707,.85,0)));
+    w.add(new THREE.Mesh(new THREE.CylinderGeometry(.24,.24,.05,32).rotateX(rx),M(0x777b82,.4,1)));
+    const cal=new THREE.Mesh(B(.1,.12,.05),M(0xc4081a,.4,.3));cal.position.set(.04,.14,d*.06);w.add(cal);
+    const rim=new THREE.Mesh(new THREE.CylinderGeometry(.29,.29,.04,40).rotateX(rx),gun);rim.position.z=d*.13;w.add(rim);
+    const lip=new THREE.Mesh(new THREE.TorusGeometry(.29,.022,8,44),chrome);lip.position.z=d*.15;w.add(lip);
+    for(let i=0;i<10;i++){const s=new THREE.Mesh(B(.045,.27,.025),chrome);s.rotation.z=i*Math.PI/5;s.position.z=d*.155;w.add(s)}
+    const cap=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,.02,20).rotateX(rx),M(0xc4081a,.3,.6));cap.position.z=d*.17;w.add(cap);
+    w.position.set(x,.4,z);g.add(w)};
+  [[1.3,.8],[1.3,-.8],[-1.35,.8],[-1.35,-.8]].forEach(p=>wheel(...p));
+  return g;
+}
+function buildCarOld(){
+  const g=new THREE.Group(),ex={depth:1.55,bevelEnabled:true,bevelThickness:.12,bevelSize:.12,bevelSegments:6,curveSegments:24};
+  const paint=new THREE.MeshPhysicalMaterial({color:COLORS[0][1],metalness:.55,roughness:.3,clearcoat:1,clearcoatRoughness:.04});bodyMats=[paint];
+  const dark=new THREE.MeshStandardMaterial({color:0x0a0a0c,roughness:.6,metalness:.3});
+  const glass=new THREE.MeshPhysicalMaterial({color:0x05070a,metalness:.9,roughness:.06,clearcoat:1});
+  const b=new THREE.Shape();b.moveTo(-2.2,.32);b.lineTo(-2.22,.8);b.quadraticCurveTo(-2.1,1,-1.5,1);b.lineTo(1,.98);b.quadraticCurveTo(1.7,.86,2.1,.72);b.quadraticCurveTo(2.25,.6,2.2,.42);b.lineTo(2.1,.32);b.lineTo(-2.2,.32);
+  const bg=new THREE.ExtrudeGeometry(b,ex);bg.translate(0,0,-.775);g.add(new THREE.Mesh(bg,paint));
+  const c=new THREE.Shape();c.moveTo(-1.35,.98);c.bezierCurveTo(-1,1.25,-.6,1.42,-.1,1.42);c.lineTo(.35,1.4);c.quadraticCurveTo(.75,1.3,1.1,.98);c.lineTo(-1.35,.98);
+  const cg=new THREE.ExtrudeGeometry(c,{...ex,depth:1.2,bevelThickness:.08,bevelSize:.08,bevelSegments:4});cg.translate(0,0,-.6);g.add(new THREE.Mesh(cg,glass));
+  const roof=new THREE.Shape();roof.moveTo(-.85,1.3);roof.bezierCurveTo(-.7,1.38,-.5,1.43,-.1,1.43);roof.lineTo(.3,1.41);roof.quadraticCurveTo(.4,1.4,.45,1.34);roof.lineTo(-.85,1.34);
+  const under=new THREE.Mesh(new THREE.BoxGeometry(4.3,.22,1.5),dark);under.position.set(0,.3,0);g.add(under);
+  const lamp=(w,h,d,col,x,y,z)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshBasicMaterial({color:col}));m.position.set(x,y,z);g.add(m)};
+  lamp(.06,.06,.4,new THREE.Color(4,4,4.5),2.31,.62,.55);lamp(.06,.06,.4,new THREE.Color(4,4,4.5),2.31,.62,-.55);
+  lamp(.05,.06,1.5,new THREE.Color(3,0,.1),-2.33,.84,0);
+  const split=new THREE.Mesh(new THREE.BoxGeometry(.3,.05,1.6),dark);split.position.set(2.3,.34,0);g.add(split);
+  const wheel=(x,z)=>{const w=new THREE.Group();
+    const t=new THREE.Mesh(new THREE.CylinderGeometry(.4,.4,.3,36).rotateX(Math.PI/2),new THREE.MeshStandardMaterial({color:0x080808,roughness:.85}));
+    const r=new THREE.Mesh(new THREE.CylinderGeometry(.29,.29,.32,36).rotateX(Math.PI/2),new THREE.MeshStandardMaterial({color:0xb8bcc2,metalness:1,roughness:.25}));
+    w.add(t,r);for(let i=0;i<5;i++){const s=new THREE.Mesh(new THREE.BoxGeometry(.05,.3,.34),new THREE.MeshStandardMaterial({color:0x2a2a2e,metalness:.8,roughness:.4}));s.rotation.z=i*Math.PI*2/5;w.add(s)}
+    w.position.set(x,.4,z);g.add(w)};
+  [[1.35,.72],[1.35,-.72],[-1.35,.72],[-1.35,-.72]].forEach(p=>wheel(...p));
+  return g;
+}
+
+function init3D(){
+  scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(S.fov,innerWidth/innerHeight,.1,100);
+  // procedural studio environment for reflections
+  const env=new THREE.Scene(),bm=(v,r,gc,b)=>new THREE.MeshBasicMaterial({color:new THREE.Color(r*v,gc*v,b*v),side:THREE.DoubleSide});
+  const box=(w,h,d,x,y,z,m)=>{const e=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);e.position.set(x,y,z);env.add(e)};
+  env.add(new THREE.Mesh(new THREE.SphereGeometry(30,16,16),new THREE.MeshBasicMaterial({color:0x08080a,side:THREE.BackSide})));
+  box(14,.3,5,0,9,0,bm(6,1,1,1));box(.3,5,12,-10,3,0,bm(4,1,1,1.05));box(.3,3,10,10,2,0,bm(3,1,.5,.5));box(10,1,.3,0,3,-10,bm(3,1,1,1));
+  const pm=new THREE.PMREMGenerator(renderer);scene.environment=pm.fromScene(env,.03).texture;
+  // lighting rig: soft sky/ground fill, shadow-casting key, cool fill, red rim from behind
+  scene.add(new THREE.HemisphereLight(0xcfd8ff,0x050506,.45));
+  const key=new THREE.DirectionalLight(0xfff4e6,1.5);key.position.set(4,7,5);key.castShadow=true;
+  key.shadow.mapSize.set(MOB?1024:2048,MOB?1024:2048);
+  Object.assign(key.shadow.camera,{left:-5,right:5,top:5,bottom:-5,near:1,far:20});
+  key.shadow.bias=-.0004;key.shadow.normalBias=.03;key.shadow.radius=4;scene.add(key);
+  const fill=new THREE.DirectionalLight(0x8fb0ff,.5);fill.position.set(-6,2.5,3);scene.add(fill);
+  const rim=new THREE.DirectionalLight(0xEB0A1E,1.1);rim.position.set(-5,3,-6);scene.add(rim);
+  // invisible floor that only receives the car's real shadow
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(30,30),new THREE.ShadowMaterial({opacity:.6}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+  const shade=o=>o.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=!(m.material&&m.material.transparent)}});
+  car=buildCar();shade(car);scene.add(car);
+  // soft contact shadow + floor ring
+  const sh=new THREE.Mesh(new THREE.PlaneGeometry(7,3.6),new THREE.MeshBasicMaterial({map:tex([[0,'rgba(0,0,0,.85)'],[1,'rgba(0,0,0,0)']]),transparent:true,depthWrite:false}));sh.rotation.x=-Math.PI/2;sh.position.y=.01;sh.scale.setScalar(1.25);scene.add(sh);
+  ring=new THREE.Mesh(new THREE.RingGeometry(3.2,3.24,96),new THREE.MeshBasicMaterial({color:0xEB0A1E,transparent:true,opacity:0,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.y=.02;ring.scale.setScalar(1.1);scene.add(ring);
+  LIGHTS={hemi:scene.children.find(o=>o.isHemisphereLight),key,fill,rim};
+  buildStudio();
+  modelReady=new Promise(done=>{
+  if(!(MODEL_URL&&THREE.GLTFLoader))return done(false);
+    new THREE.GLTFLoader().load(MODEL_URL,gl=>{
+      const m=gl.scene,pivot=new THREE.Group();pivot.add(m);
+      m.rotation.y=Math.PI/2; // model faces +Z, page expects the nose on +X
+      pivot.updateMatrixWorld(true);
+      let bb=new THREE.Box3().setFromObject(pivot),sz=bb.getSize(new THREE.Vector3());
+      const k=5.4/Math.max(sz.x,sz.z);m.scale.setScalar(k);
+      pivot.updateMatrixWorld(true);bb.setFromObject(pivot);
+      m.position.set(-(bb.min.x+bb.max.x)/2,-bb.min.y,-(bb.min.z+bb.max.z)/2);
+      bodyMats=[];
+      m.traverse(o=>{if(!o.isMesh)return;const mt=o.material;
+        if(mt.envMapIntensity!==undefined)mt.envMapIntensity=1.1;
+        if(/carpaint/i.test(mt.name||'')){bodyMats.push(mt);mt.metalness=Math.max(mt.metalness,.45);mt.roughness=Math.min(mt.roughness,.3);mt.clearcoat=1;mt.clearcoatRoughness=.03}});
+      shade(pivot);scene.remove(car);car=pivot;scene.add(car);setColor(COLORS[0][1],true);done(true)},
+      x=>{if(x.total)setLoad(x.loaded/x.total*.5)},
+      e=>{console.warn('GLB failed to load ('+MODEL_URL+'), using procedural car',e);done(false)});
+  });
+  const rs=()=>{renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()};rs();addEventListener('resize',rs);
+  addEventListener('pointermove',e=>{if(RM)return;mouse.x=e.clientX/innerWidth-.5;mouse.y=e.clientY/innerHeight-.5},{passive:true});
+  const glEl=$('#gl'),ghostEl=$('#ghost'),glowEl=$('#glow');
+  const loop=()=>{requestAnimationFrame(loop);
+    const now=performance.now();
+    mouse.sx+=(mouse.x-mouse.sx)*.05;mouse.sy+=(mouse.y-mouse.sy)*.05;
+    const asp=innerWidth/innerHeight,k=Math.min(3.4,Math.max(1,1.7/asp));
+    const p=R.p,w=revealWeight(p),A=R.on?1-R.q:0;
+    // story pose (original behaviour)
+    let rot=S.rot+S.ir+mouse.sx*.5,px=mouse.sx*.6,py=S.cy-mouse.sy*.4,pz=(S.cz+S.iz)*k,fov=S.fov;
+    // unveiling pose: car stays put, camera pushes in and orbits side → front three-quarter
+    if(w>0){const c=revealCam(p),d=c.d*k;
+      rot+=(ROT0-rot)*w;px+=(Math.sin(c.t)*d+mouse.sx*.35-px)*w;py+=(c.y-mouse.sy*.25-py)*w;pz+=(Math.cos(c.t)*d-pz)*w;fov+=(c.f-fov)*w}
+    car.rotation.y=rot;camera.position.set(px,py,pz);camera.lookAt(0,.65,0);
+    if(Math.abs(camera.fov-fov)>1e-3){camera.fov=fov;camera.updateProjectionMatrix()}
+    ring.material.opacity=S.ring*.55;ring.scale.setScalar(1.1+Math.sin(now/900)*.01);
+    updateCloth(p);updateStudio(p,w,A,now);
+    glEl.style.opacity=S.cop;ghostEl.style.opacity=S.ghost*(1-A);glowEl.style.opacity=.35+.65*(1-A);
+    renderer.render(scene,camera)};loop();
+}
+
+/* ---------- unveiling: state, camera path, studio ---------- */
+const ROT0=S.rot;
+const R={on:false,p:1,q:0};            // on: reveal active · p: unveil progress (scroll) · q: hand-off into the hero
+let LIGHTS,modelReady=Promise.resolve(false),cloth=null,ST={};
+const sm=(a,b,x)=>{const t=Math.min(1,Math.max(0,(x-a)/(b-a)));return t*t*(3-2*t)};
+const lerp=(a,b,t)=>a+(b-a)*t;
+function revealWeight(p){return R.on?1-sm(.95,1,p):0}
+// camera keyframes over unveil progress: t = orbit angle, d = distance, y = height, f = fov
+const CAMK=[[0,-.66,11.8,1.9,30],[.12,-.62,11,1.75,30],[.45,-.44,8.9,1.5,31],[.76,-.26,8.3,1.38,32],[.92,-.08,8.2,1.3,32],[1,0,8.5,1.3,32]];
+function revealCam(p){let i=0;while(i<CAMK.length-2&&p>CAMK[i+1][0])i++;const a=CAMK[i],b=CAMK[i+1],t=sm(a[0],b[0],p);
+  return{t:lerp(a[1],b[1],t),d:lerp(a[2],b[2],t),y:lerp(a[3],b[3],t),f:lerp(a[4],b[4],t)}}
+
+function addMat(o){const m=new THREE.MeshBasicMaterial(Object.assign({transparent:true,depthWrite:false},o));
+  m.blending=THREE.CustomBlending;m.blendSrc=THREE.OneFactor;m.blendDst=THREE.OneFactor;m.premultipliedAlpha=true;return m}
+function buildStudio(){
+  // reflective floor: mirror render, faded radially and added on top of the page background
+  if(THREE.Reflector){
+    const res=Math.min(MOB?512:1024,Math.round(innerWidth*Math.min(devicePixelRatio,2)*(MOB?.5:.7)));
+    const shader={uniforms:{color:{value:null},tDiffuse:{value:null},textureMatrix:{value:null},str:{value:.3}},
+      vertexShader:'uniform mat4 textureMatrix;varying vec4 vUv;varying vec2 vW;void main(){vUv=textureMatrix*vec4(position,1.);vW=(modelMatrix*vec4(position,1.)).xz;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+      fragmentShader:'uniform sampler2D tDiffuse;uniform float str;varying vec4 vUv;varying vec2 vW;void main(){vec3 c=texture2DProj(tDiffuse,vUv).rgb;float f=(1.-smoothstep(1.5,7.5,length(vW)))*str;c*=f;gl_FragColor=vec4(c,max(c.r,max(c.g,c.b)));}'};
+    const mir=new THREE.Reflector(new THREE.PlaneGeometry(40,40),{textureWidth:res,textureHeight:Math.round(res*innerHeight/innerWidth)||res,clipBias:.003,shader});
+    const m=mir.material;m.transparent=true;m.depthWrite=false;m.blending=THREE.CustomBlending;m.blendSrc=THREE.OneFactor;m.blendDst=THREE.OneFactor;
+    mir.rotation.x=-Math.PI/2;mir.position.y=-.001;mir.renderOrder=-2;scene.add(mir);ST.mirror=mir;
+  }
+  // pool of light on the floor under the top spot
+  const pool=new THREE.Mesh(new THREE.PlaneGeometry(10,10),addMat({map:tex([[0,'rgba(255,255,255,.55)'],[.45,'rgba(200,210,255,.18)'],[1,'rgba(0,0,0,0)']]),opacity:0}));
+  pool.rotation.x=-Math.PI/2;pool.position.y=.004;pool.renderOrder=-1;scene.add(pool);ST.pool=pool;
+  // top spot + visible beam
+  const spot=new THREE.SpotLight(0xeef1ff,0,22,.44,.6,1.1);spot.position.set(.2,9,.4);spot.target.position.set(0,.4,0);scene.add(spot,spot.target);ST.spot=spot;
+  const cone=new THREE.Mesh(new THREE.ConeGeometry(3.4,9,48,1,true),new THREE.ShaderMaterial({transparent:true,depthWrite:false,
+    blending:THREE.CustomBlending,blendSrc:THREE.OneFactor,blendDst:THREE.OneFactor,uniforms:{op:{value:0}},
+    vertexShader:'varying vec3 vN;varying vec3 vV;varying float vY;void main(){vec4 w=modelMatrix*vec4(position,1.);vN=normalize(mat3(modelMatrix)*normal);vV=normalize(cameraPosition-w.xyz);vY=position.y/9.+.5;gl_Position=projectionMatrix*viewMatrix*w;}',
+    fragmentShader:'uniform float op;varying vec3 vN;varying vec3 vV;varying float vY;void main(){float f=pow(abs(dot(vN,vV)),2.5)*smoothstep(0.,.5,vY)*(1.-smoothstep(.82,1.,vY))*op;vec3 c=vec3(.82,.87,1.)*f;gl_FragColor=vec4(c,f);}'}));
+  cone.position.set(.2,4.5,.4);scene.add(cone);ST.cone=cone;
+  // drifting haze
+  const hc=document.createElement('canvas');hc.width=hc.height=256;const hx=hc.getContext('2d');
+  for(let i=0;i<46;i++){const x=40+Math.random()*176,y=40+Math.random()*176,r=20+Math.random()*60,g=hx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,'rgba(255,255,255,.09)');g.addColorStop(1,'rgba(255,255,255,0)');hx.fillStyle=g;hx.fillRect(0,0,256,256)}
+  const ht=new THREE.CanvasTexture(hc);ST.haze=[];
+  const hg=new THREE.PlaneGeometry(1,1);
+  for(let i=0;i<(MOB?3:5);i++){const s=new THREE.Mesh(hg,addMat({map:ht,opacity:0,color:i%2?0xc9d3ff:0xffffff}));
+    s.scale.setScalar(9+i*2.5);s.userData={x:(i-2)*3.2,y:1.6+(i%3)*.9,z:-2.5-(i%2)*2,ph:i*1.7};s.renderOrder=3;scene.add(s);ST.haze.push(s)}
+  // light that sweeps along the flank at the moment of reveal
+  ST.sweep=new THREE.PointLight(0xffffff,0,7,1.6);scene.add(ST.sweep);
+}
+let lastEnvI=-1;
+function updateStudio(p,w,A,now){
+  // Lf: 0 = dim, covered studio · 1 = full lighting (also the normal state of the rest of the site)
+  const Lf=1-w*(1-sm(.7,.95,p));
+  if(LIGHTS){LIGHTS.hemi.intensity=.45*(.3+.7*Lf);LIGHTS.key.intensity=1.5*(.5+.5*Lf);LIGHTS.fill.intensity=.5*(.25+.75*Lf);LIGHTS.rim.intensity=1.1*(.85+.15*Lf)}
+  const envI=1.1*(.35+.65*Lf);
+  if(Math.abs(envI-lastEnvI)>.002){lastEnvI=envI;car.traverse(o=>{if(o.isMesh&&o!==(cloth&&cloth.mesh)&&o.material&&o.material.envMapIntensity!==undefined)o.material.envMapIntensity=envI})}
+  ST.spot.intensity=A*(1.9-.6*sm(.85,1,p));
+  ST.cone.material.uniforms.op.value=A*(.11-.04*sm(.85,1,p));ST.cone.visible=A>.001;
+  ST.pool.material.opacity=A*.22;ST.pool.visible=A>.001;
+  if(ST.mirror)ST.mirror.material.uniforms.str.value=.16+.2*A;
+  const t=now/1000;ST.haze.forEach(s=>{const u=s.userData;s.position.set(u.x+Math.sin(t*.07+u.ph)*1.2,u.y+Math.sin(t*.11+u.ph)*.3,u.z);s.quaternion.copy(camera.quaternion);s.material.opacity=A*.1;s.visible=A>.001});
+  // sweep: a hot light glides nose → tail along the near flank as the cover clears
+  const sw=sm(.8,.97,p),bump=Math.sin(Math.PI*Math.min(1,Math.max(0,(p-.8)/.17)));
+  const lx=lerp(3.4,-3.4,sw);ST.sweep.position.set(lx*Math.cos(ROT0)+2.4*Math.sin(ROT0),2.1,-lx*Math.sin(ROT0)+2.4*Math.cos(ROT0));
+  ST.sweep.intensity=A*w*bump*3.2;
+}
+
+/* ---------- cloth mesh: plays back the baked frames ---------- */
+function makeCloth(B,box){
+  const {NU,NV,n}=B,g=new THREE.BufferGeometry(),pos=new Float32Array(n*3),uv=new Float32Array(n*2),idx=[];
+  for(let i=0;i<NU;i++)for(let j=0;j<NV;j++){const k=i*NV+j;uv[k*2]=i/(NU-1);uv[k*2+1]=j/(NV-1);
+    if(i<NU-1&&j<NV-1){const a=k,b=k+NV;idx.push(a,b,a+1,b,b+1,a+1)}}
+  pos.set(B.frames.subarray(0,n*3));
+  g.setAttribute('position',new THREE.BufferAttribute(pos,3).setUsage(THREE.DynamicDrawUsage));g.setAttribute('uv',new THREE.BufferAttribute(uv,2));g.setIndex(idx);g.computeVertexNormals();
+  const mat=new THREE.MeshPhysicalMaterial({map:clothTexture(),roughness:.52,metalness:0,sheen:new THREE.Color(0x77798a),side:THREE.DoubleSide,envMapIntensity:.6});
+  const mesh=new THREE.Mesh(g,mat);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;car.add(mesh);
+  // map scroll → frame so the reveal follows the car's anatomy: measure how far the cover's leading edge has travelled in every frame
+  const span=box.x1-box.x0+.3,e=new Float32Array(B.F);let mx=0;
+  for(let f=0;f<B.F;f++){let fx=-1e9;const o=f*n*3;for(let i=0;i<n;i++){const x=B.frames[o+i*3];if(x>fx)fx=x}
+    mx=Math.max(mx,Math.min(1,Math.max(0,(box.x1+.15-fx)/span)));e[f]=mx}
+  let fLift=0;while(fLift<B.F-1&&e[fLift+1]<=.004)fLift++;
+  let fFull=fLift;while(fFull<B.F-1&&e[fFull]<.999)fFull++;
+  cloth={mesh,B,e,fLift,fFull,last:-1};
+}
+function clothFrame(p){const {e,fLift,fFull,B}=cloth;
+  if(p<=.03)return 0;
+  if(p<.12)return fLift*sm(.03,.12,p);
+  if(p<.76){const tg=(p-.12)/.64;let lo=fLift,hi=fFull;while(hi-lo>1){const m=(lo+hi)>>1;if(e[m]<tg)lo=m;else hi=m}
+    const d=e[hi]-e[lo];return lo+(d>1e-6?Math.min(1,Math.max(0,(tg-e[lo])/d)):0)}
+  if(p<.93)return lerp(fFull,B.F-1,(p-.76)/.17);
+  return B.F-1}
+function updateCloth(p){
+  if(!cloth)return;const vis=R.on&&p<.985;cloth.mesh.visible=vis;if(!vis)return;
+  const f=clothFrame(p);if(Math.abs(f-cloth.last)<1e-4)return;cloth.last=f;
+  const {B}=cloth,n3=B.n*3,i0=Math.min(B.F-1,Math.floor(f)),i1=Math.min(B.F-1,i0+1),a=f-i0,F=B.frames,o0=i0*n3,o1=i1*n3,arr=cloth.mesh.geometry.attributes.position.array;
+  for(let i=0;i<n3;i++)arr[i]=F[o0+i]+(F[o1+i]-F[o0+i])*a;
+  const g=cloth.mesh.geometry;g.attributes.position.needsUpdate=true;g.computeVertexNormals();
+}
+async function prepareReveal(){
+  const box=captureHeight(renderer,car);
+  const P=Object.assign(box,{sp:MOB?.15:.12,cell:MOB?.065:.05,iters:4,dt:.0125,every:MOB?6:5});
+  const B=await runBake(P,v=>setLoad(.5+.5*v));
+  makeCloth(B,box);
+}
+
+/* ---------- paint switching ---------- */
+function setColor(hex,instant){const c=new THREE.Color(hex);bodyMats.forEach(m=>instant?m.color.copy(c):gsap.to(m.color,{r:c.r,g:c.g,b:c.b,duration:.6}))}
+const sws=$('#sws');
+COLORS.forEach((c,i)=>{const b=document.createElement('button');b.className='sw'+(i?'':' on');b.style.background=c[1];b.setAttribute('aria-label','Paint: '+c[0]);
+  b.onclick=()=>{$$('.sw').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#cname').textContent=c[0];if(ok)setColor(c[1])};sws.append(b)});
+
+/* ---------- UI: nav, menu, top ---------- */
+const go=id=>{const t=$(id);t&&t.scrollIntoView({behavior:RM?'auto':'smooth'})};
+$$('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();closeMenu();go(a.getAttribute('href'))}));
+const menu=$('#menu');
+function openMenu(){gsap.to(menu,{clipPath:'circle(150% at 90% 5%)',duration:RM?0:.7,ease:'power3.inOut'});menu.style.pointerEvents='auto';$('#burger').setAttribute('aria-expanded','true')}
+function closeMenu(){gsap.to(menu,{clipPath:'circle(0% at 90% 5%)',duration:RM?0:.5,ease:'power3.inOut'});menu.style.pointerEvents='none';$('#burger').setAttribute('aria-expanded','false')}
+$('#burger').onclick=openMenu;$('#mclose').onclick=closeMenu;
+$('#top').onclick=()=>scrollTo({top:0,behavior:RM?'auto':'smooth'});
+$('#again').onclick=()=>scrollTo({top:0,behavior:RM?'auto':'smooth'});
+$$('.btn').forEach(b=>{if(RM)return;b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();gsap.to(b,{x:(e.clientX-r.left-r.width/2)*.12,y:(e.clientY-r.top-r.height/2)*.2,duration:.3})});b.addEventListener('pointerleave',()=>gsap.to(b,{x:0,y:0,duration:.5}))});
+
+/* ---------- hotspots ---------- */
+const INFO=[['Driver display','A driver-focused instrument display keeps key information in your line of sight.'],['Infotainment','A central touchscreen brings navigation, media and phone connectivity into one interface.'],['Two-seat cockpit','Low-set, supportive seating puts you close to the car and the road.'],['Controls','Controls sit within easy reach so your attention stays where it belongs: ahead.'],['Steering wheel','A thick, sport-profile rim carries the paddle shifters and key controls within thumb reach, so your hands stay at nine and three.']];
+const wheelEl=$('#wheel'),needle=$('#needle'),wHot=$('#hotWheel'),cockpit=$('#cockpit'),REST=-94;
+const W={x:0,v:0,t:0,k:90,c:16},N={x:REST,v:0,t:REST,k:170,c:11};
+let last=0,run=false;
+function paint(){
+  wheelEl.setAttribute('transform','rotate('+W.x.toFixed(2)+' 250 288)');
+  needle.setAttribute('transform','rotate('+N.x.toFixed(2)+' 250 182)');
+  const a=W.x*Math.PI/180;   /* keep the hotspot glued to the spoke buttons as the wheel turns */
+  wHot.style.left=((250-58*Math.cos(a)-8*Math.sin(a))/8)+'%';
+  wHot.style.top=((288-58*Math.sin(a)+8*Math.cos(a))/4)+'%';
+}
+function frame(now){
+  const dt=Math.min((now-last)/1000,.032);last=now;let busy=false;
+  for(const s of [W,N]){s.v+=(s.k*(s.t-s.x)-s.c*s.v)*dt;s.x+=s.v*dt;
+    if(Math.abs(s.v)>.05||Math.abs(s.t-s.x)>.02)busy=true;else{s.x=s.t;s.v=0}}
+  paint();if(busy)requestAnimationFrame(frame);else run=false;
+}
+function kick(){if(RM){W.x=W.t;N.x=N.t;paint();return}if(!run){run=true;last=performance.now();requestAnimationFrame(frame)}}
+if(!RM){
+  cockpit.addEventListener('pointermove',e=>{const r=cockpit.getBoundingClientRect();
+    W.t=Math.max(-1,Math.min(1,((e.clientX-r.left)/r.width-.3125)/.4))*38;kick()});
+  cockpit.addEventListener('pointerleave',()=>{W.t=0;kick()});
+}
+$$('.hot').forEach(h=>h.onclick=()=>{$$('.hot').forEach(x=>x.classList.remove('on'));h.classList.add('on');const d=INFO[h.dataset.h];
+  gsap.fromTo('#info>*',{autoAlpha:0,y:8},{autoAlpha:1,y:0,duration:.4,stagger:.05});$('#it').textContent=d[0];$('#ib').textContent=d[1];
+  wheelEl.classList.toggle('lit',h.dataset.h==='4');
+  if(h.dataset.h==='0'&&!RM){N.t=48;kick();setTimeout(()=>{N.t=REST;kick()},420)}
+});
+
+/* ---------- scroll story ---------- */
+/* ---------- unveiling timeline (pinned + scrubbed) ---------- */
+const STAGES=[0,.15,.37,.57,.84];
+let hudP=-1;
+function hud(p){if(Math.abs(p-hudP)<.0005)return;hudP=p;
+  const u=Math.min(1,Math.max(0,(p-.1)/.76));$('#rv-pct').textContent=String(Math.round(u*100)).padStart(3,'0');$('#rv-bar').style.transform='scaleX('+u+')';
+  let s=0;STAGES.forEach((v,i)=>{if(p>=v)s=i});$$('.rv-stage').forEach((el,i)=>{el.classList.toggle('on',i===s);el.classList.toggle('done',i<s)})}
+function revealStatic(){ // reduced motion / no WebGL / bake failure: show the finished state, no pin
+  R.on=false;R.p=1;gsap.set(['#rv-intro','#rv-cue','#rv-track','#rv-meter'],{autoAlpha:0});gsap.set('.rv-f',{autoAlpha:1,y:0});
+}
+function revealTimeline(){
+  if(!R.on){revealStatic();return}
+  gsap.set('.rv-f',{autoAlpha:0});
+  const tl=gsap.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:'#reveal',start:'top top',end:()=>'+='+Math.round(innerHeight*(MOB?3.8:4.8)),
+    pin:true,scrub:1,anticipatePin:1,invalidateOnRefresh:true,onUpdate:()=>hud(R.p)}});
+  tl.to(R,{p:1,duration:1,onUpdate:()=>hud(R.p)},0)
+    .to('#rv-cue',{autoAlpha:0,duration:.04},.015)
+    .to('#rv-intro',{autoAlpha:0,y:-50,filter:'blur(8px)',duration:.07,ease:'power1.in'},.075)
+    .fromTo(['#rv-track','#rv-meter'],{autoAlpha:0,y:16},{autoAlpha:1,y:0,duration:.05,ease:'power2.out'},.11)
+    .to(['#rv-track','#rv-meter'],{autoAlpha:0,y:-12,duration:.05},.84)
+    .fromTo('.rv-f',{autoAlpha:0,y:34,filter:'blur(8px)'},{autoAlpha:1,y:0,filter:'blur(0px)',duration:.05,stagger:.011,ease:'power2.out'},.88);
+  hud(R.p);
+}
+function revealHandoff(){
+  // as the hero arrives, the unveiling copy and studio atmosphere give way to the original page look
+  ScrollTrigger.create({trigger:'#hero',start:'top bottom',end:'top 30%',scrub:true,onUpdate:s=>{R.q=s.progress}});
+  gsap.fromTo('#rv-final',{autoAlpha:1,y:0},{autoAlpha:0,y:-60,ease:'none',immediateRender:false,scrollTrigger:{trigger:'#hero',start:'top 92%',end:'top 50%',scrub:true}});
+}
+
+function story(){
+  revealTimeline();revealHandoff();
+  gsap.set('[data-r]',{autoAlpha:0});
+  const secs=$$('#story>section');
+  const show=(sec,on)=>{const els=$$('[data-r]',sec);
+    gsap.to(els,on?{autoAlpha:1,y:0,filter:'blur(0px)',duration:RM?.01:.9,stagger:RM?0:.09,ease:'power3.out',overwrite:true}
+                  :{autoAlpha:0,y:RM?0:-20,filter:RM?'none':'blur(6px)',duration:RM?.01:.35,overwrite:true});
+    if(on&&sec.id==='performance')counters()};
+  secs.forEach(s=>{if(!RM)gsap.set($$('[data-r]',s),{y:30,filter:'blur(6px)'});
+    ScrollTrigger.create({trigger:s,start:'top 55%',end:'bottom 45%',onToggle:t=>show(s,t.isActive)})});
+  if(ok){
+    const keys=[{rot:0,cy:1,cz:7.4,fov:30,ghost:.05},
+      {rot:-1.35,cy:.5,cz:6,fov:34,ring:1,ghost:.1},
+      {rot:-1.9,cy:1.8,cz:11,cop:.1,ring:0,ghost:0},
+      {rot:-2.7,cy:1.1,cz:9.2,fov:32,cop:1,ring:.6,ghost:.07}];
+    const tl=gsap.timeline({scrollTrigger:{trigger:'#story',start:'top top',end:'bottom bottom',scrub:RM?true:1},defaults:{ease:'power1.inOut'}});
+    tl.to({},{duration:.4});keys.forEach(k=>{tl.to(S,{...k,duration:1});tl.to({},{duration:.35})});
+  }
+  ScrollTrigger.create({trigger:'#story',start:'top top',end:'bottom bottom',onUpdate:s=>{
+    $('#progress').style.transform='scaleX('+s.progress+')';
+    const on=scrollY>innerHeight*.8;$('#top').style.opacity=on?1:0;$('#top').style.pointerEvents=on?'auto':'none'}});
+}
+let counted=false;
+function counters(){if(counted)return;counted=true;$$('[data-count]').forEach(el=>{const to=+el.dataset.count,d=+(el.dataset.dec||0),o={v:0};
+  gsap.to(o,{v:to,duration:RM?.01:1.6,ease:'power2.out',onUpdate:()=>el.textContent=o.v.toFixed(d)})})}
+
+/* ---------- boot ---------- */
+/* loader shows real progress: model download (0–50%) then cloth bake (50–100%) */
+const LD={t:0,v:0,min:performance.now()+(RM?200:900)};
+function setLoad(x){LD.t=Math.max(LD.t,Math.min(1,x))}
+const ldTick=()=>{LD.v+=(LD.t-LD.v)*.15;if(LD.t-LD.v<.002)LD.v=LD.t;$('#lbar').style.width=LD.v*100+'%';$('#lnum').textContent=Math.round(LD.v*100)+'%'};
+gsap.ticker.add(ldTick);
+async function boot(){
+  if(ok){
+    try{init3D()}catch(e){console.error(e);ok=false}
+    if(ok){
+      await Promise.race([modelReady,new Promise(r=>setTimeout(r,25000))]);setLoad(.5);
+      if(!RM){try{await prepareReveal();R.on=true;R.p=0}catch(e){console.warn('Cloth bake failed — showing the revealed car',e)}}
+    }
+  }
+  if(!ok){const f=$('#fallback');f.classList.remove('hidden');f.classList.add('grid')}
+  setLoad(1);
+  while(LD.v<.995||performance.now()<LD.min)await new Promise(r=>setTimeout(r,30));
+  gsap.ticker.remove(ldTick);
+  const atTop=scrollY<innerHeight*.5;
+  story();
+  if(R.on&&!atTop)ScrollTrigger.refresh();
+  gsap.to('#loader',{autoAlpha:0,duration:.6,onComplete:()=>$('#loader').remove()});
+  if(ok&&!R.on){gsap.to(S,{iz:0,ir:0,duration:RM?.01:2.6,ease:'power3.out'})}else{S.iz=0;S.ir=0}
+  if(R.on&&atTop){ // entrance for the unveiling copy
+    gsap.from('#rv-intro .ln>span',{yPercent:110,duration:1.2,stagger:.12,ease:'power4.out',delay:.15});
+    gsap.from('#rv-intro p,#rv-cue>*',{autoAlpha:0,y:12,duration:1,delay:.5,stagger:.1,ease:'power3.out'});
+  }
+}
+boot();
+})();
+</script>
+</body>
+</html>
